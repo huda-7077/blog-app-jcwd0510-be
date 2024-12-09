@@ -3,6 +3,7 @@ import { PORT } from "./config";
 import cors from "cors";
 import sampleRouter from "./routes/sample.router";
 import authRouter from "./routes/auth.controller";
+import "./scripts/pointsExpiryScheduler";
 
 const app = express();
 
