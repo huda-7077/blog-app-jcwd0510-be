@@ -11,7 +11,7 @@ interface RegisterInput
   > {
   referralCode?: string;
 }
-export const registerServices = async (body: RegisterInput) => {
+export const registerService = async (body: RegisterInput) => {
   try {
     const { name, email, password, referralCode } = body;
 
