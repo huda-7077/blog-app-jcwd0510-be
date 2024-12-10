@@ -30,6 +30,7 @@ model User {
   points        Point[]    @relation("UserPoints")
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
+  blogs         Blog[]
 
   @@map("users")
 }
@@ -68,4 +69,20 @@ model Point {
   user      User     @relation("UserPoints", fields: [userId], references: [id])
 
   @@map("points")
+}
+
+model Blog {
+  id          Int       @id @default(autoincrement())
+  title       String
+  thumbnail   String
+  description String    @db.Text()
+  category    String
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  content     String    @db.Text()
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blogs")
 }
