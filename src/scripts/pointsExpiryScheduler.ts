@@ -1,5 +1,5 @@
 import { scheduleJob } from "node-schedule";
-import { prisma } from "../lib/prisma";
+import prisma from "../lib/prisma";
 
 const expirePoints = async () => {
   const now = new Date();
