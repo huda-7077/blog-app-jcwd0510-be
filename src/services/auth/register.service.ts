@@ -1,8 +1,8 @@
 import { User } from "@prisma/client";
-import { prisma } from "../../lib/prisma";
 import { hashPassword } from "../../lib/argon";
 import { generateReferralCode } from "../../lib/referral";
 import { generateUniqueCouponCode } from "../../lib/coupon";
+import prisma from "../../lib/prisma";
 
 interface RegisterInput
   extends Omit<
@@ -56,7 +56,7 @@ export const registerService = async (body: RegisterInput) => {
       });
 
       const pointsExpiryDate = new Date();
-      pointsExpiryDate.setMinutes(pointsExpiryDate.getMinutes() + 3);
+      pointsExpiryDate.setMinutes(pointsExpiryDate.getMinutes() + 10);
 
       await prisma.point.create({
         data: {
@@ -75,7 +75,7 @@ export const registerService = async (body: RegisterInput) => {
       });
 
       const couponExpiryDate = new Date();
-      couponExpiryDate.setMinutes(couponExpiryDate.getMinutes() + 3);
+      couponExpiryDate.setMinutes(couponExpiryDate.getMinutes() + 10);
       const uniqueCouponCode = await generateUniqueCouponCode();
       await prisma.coupon.create({
         data: {
