@@ -10,7 +10,7 @@ import {
   validateLogin,
   validateRegister,
   validateResetPassword,
-} from "../validators/auth.validators";
+} from "../validators/auth.validator";
 import { verifyTokenReset } from "../lib/jwt";
 
 const router = Router();
