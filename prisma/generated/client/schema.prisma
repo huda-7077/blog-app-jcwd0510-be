@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Sample {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("samples")
+}
+
+model User {
+  id            Int        @id @default(autoincrement())
+  name          String
+  email         String     @unique
+  password      String
+  profilPicture String?
+  referralCode  String     @unique
+  totalPoints   Int        @default(0)
+  inviter       Referral?  @relation("UserInvitee")
+  invitedUsers  Referral[] @relation("UserInviter")
+  Coupon        Coupon[]   @relation("UserCoupons")
+  points        Point[]    @relation("UserPoints")
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  blogs         Blog[]
+
+  @@map("users")
+}
+
+model Referral {
+  id        Int      @id @default(autoincrement())
+  inviterId Int
+  inviteeId Int      @unique
+  createdAt DateTime @default(now())
+  inviter   User     @relation("UserInviter", fields: [inviterId], references: [id])
+  invitee   User     @relation("UserInvitee", fields: [inviteeId], references: [id])
+
+  @@map("referrals")
+}
+
+model Coupon {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  code          String   @unique
+  discountValue Int
+  isUsed        Boolean  @default(false)
+  expiredAt     DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation("UserCoupons", fields: [userId], references: [id])
+
+  @@map("coupons")
+}
+
+model Point {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  points    Int
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation("UserPoints", fields: [userId], references: [id])
+
+  @@map("points")
+}
+
+model Blog {
+  id          Int       @id @default(autoincrement())
+  title       String
+  thumbnail   String
+  description String    @db.Text()
+  category    String
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  content     String    @db.Text()
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blogs")
+}
