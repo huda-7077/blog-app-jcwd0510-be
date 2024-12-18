@@ -17,9 +17,9 @@ const cloudinary_1 = require("../../lib/cloudinary");
 const prisma_1 = __importDefault(require("../../lib/prisma"));
 const createBlogService = (body, thumbnail, userId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { title, category, content, description } = body;
+        const { title } = body;
         const blog = yield prisma_1.default.blog.findFirst({
-            where: { title },
+            where: { title, deletedAt: null },
         });
         if (blog) {
             throw new Error("Blog already in use");

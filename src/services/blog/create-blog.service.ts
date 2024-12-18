@@ -14,10 +14,10 @@ export const createBlogService = async (
   userId: number
 ) => {
   try {
-    const { title, category, content, description } = body;
+    const { title } = body;
 
     const blog = await prisma.blog.findFirst({
-      where: { title },
+      where: { title, deletedAt: null },
     });
 
     if (blog) {
